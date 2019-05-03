@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/activityMargin"
+                  android:orientation="vertical"
+                  tools:context=".SingletonActivity">
+
+        <TextView android:id="@+id/daggerTitle"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Dagger (old way, no android.dagger yet)"
+                  app:layout_constraintBottom_toBottomOf="parent"
+                  app:layout_constraintLeft_toLeftOf="parent"
+                  app:layout_constraintRight_toRightOf="parent"
+                  app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView android:id="@+id/daggerText"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+
+        <TextView android:id="@+id/daggerText2"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+
+        <TextView android:id="@+id/daggerText3"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+
+        <TextView android:id="@+id/daggerText4"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+
+        <Button android:id="@+id/daggerButton"
+                android:layout_width="wrap_content"
+                android:layout_marginBottom="@dimen/activityMargin"
+                android:layout_height="wrap_content"
+                android:text="test Dagger"/>
+
+        <TextView android:id="@+id/kodeinTitle"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Kodein"/>
+
+        <TextView android:id="@+id/kodeinText"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+
+        <TextView android:id="@+id/kodeinText2"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+
+        <TextView android:id="@+id/kodeinText3"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+
+        <TextView android:id="@+id/kodeinText4"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+
+        <Button android:id="@+id/kodeinButton"
+                android:layout_marginBottom="@dimen/activityMargin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="test kodein"/>
+
+        <TextView android:id="@+id/koinTitle"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Koin"/>
+
+        <TextView android:id="@+id/koinText"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+
+        <TextView android:id="@+id/koinText2"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+
+        <TextView android:id="@+id/koinText3"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+
+        <TextView android:id="@+id/koinText4"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+
+        <Button android:id="@+id/koinButton"
+                android:layout_marginBottom="@dimen/activityMargin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="test koin"/>
+
+        <Button android:id="@+id/gotoSingletonActivity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="Go to provider activity"/>
+    </LinearLayout>
+</ScrollView>
