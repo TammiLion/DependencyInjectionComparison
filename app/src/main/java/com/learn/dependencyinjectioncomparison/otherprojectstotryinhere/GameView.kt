@@ -15,9 +15,11 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
         context.resources,
         R.drawable.playership
     )
+    private var
 
     private var invaders1: Bitmap
     private var invaders2: Bitmap
+    private var roguelikeSheet: Bitmap
     private var currentInvadersFrame: Bitmap
     private var pastTime = 0.0f
     private val startTime = System.currentTimeMillis()
@@ -31,6 +33,7 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
 
 
     init {
+        roguelikeSheet = BitmapFactory.decodeResource(context.resources, R.drawable.roguelike_sheet)
         // stretch the spaceship to a size
         // appropriate for the screen resolution
         spaceship = Bitmap.createScaledBitmap(
@@ -104,6 +107,15 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
             canvas.drawBitmap(spaceship, 100f, 100f, paint)
 
             canvas.drawBitmap(currentInvadersFrame, 200f, 100f, paint)
+
+            val src = Rectangle(0,0,16,16)
+            val dest = Rectangle(0,0,16,16)
+            canvas.drawBitmap(roguelikeSheet, src, dest, paint)
+
+            val src2 = Rectangle(16,16,32,32)
+            val dest2 = Rectangle(32,32,32,32)
+            canvas.drawBitmap(roguelikeSheet, src2, dest2, null)
+
 
             // Draw the score and remaining lives
             // Change the brush color
