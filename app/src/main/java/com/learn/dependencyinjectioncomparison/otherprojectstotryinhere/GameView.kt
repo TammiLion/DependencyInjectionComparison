@@ -5,6 +5,7 @@ import android.graphics.*
 import android.view.MotionEvent
 import android.view.SurfaceView
 import com.learn.dependencyinjectioncomparison.R
+import android.util.TypedValue
 
 class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
 
@@ -12,14 +13,15 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
     private var canvas: Canvas = Canvas()
     private val paint: Paint = Paint()
     private var spaceship: Bitmap = BitmapFactory.decodeResource(
-        context.resources,
-        R.drawable.playership
+            context.resources,
+            R.drawable.playership
     )
-    private var
 
     private var invaders1: Bitmap
     private var invaders2: Bitmap
-    private var roguelikeSheet: Bitmap
+    private var roguelikeSheet: Bitmap = BitmapFactory.decodeResource(
+            context.resources,
+            R.drawable.roguelike_sheet)
     private var currentInvadersFrame: Bitmap
     private var pastTime = 0.0f
     private val startTime = System.currentTimeMillis()
@@ -33,42 +35,41 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
 
 
     init {
-        roguelikeSheet = BitmapFactory.decodeResource(context.resources, R.drawable.roguelike_sheet)
         // stretch the spaceship to a size
         // appropriate for the screen resolution
         spaceship = Bitmap.createScaledBitmap(
-            spaceship,
-            (size.x / 20f).toInt(),
-            (size.y / 20f).toInt(),
-            false
+                spaceship,
+                (size.x / 20f).toInt(),
+                (size.y / 20f).toInt(),
+                false
         )
 
         // Initialize the bitmaps
         invaders1 = BitmapFactory.decodeResource(
-            context.resources,
-            R.drawable.invader1
+                context.resources,
+                R.drawable.invader1
         )
 
         invaders2 = BitmapFactory.decodeResource(
-            context.resources,
-            R.drawable.invader2
+                context.resources,
+                R.drawable.invader2
         )
 
         // stretch the first spaceship to a size
         // appropriate for the screen resolution
         invaders1 = Bitmap.createScaledBitmap(
-            invaders1,
-            (size.x / 35f).toInt(),
-            (size.y / 35f).toInt(),
-            false
+                invaders1,
+                (size.x / 35f).toInt(),
+                (size.y / 35f).toInt(),
+                false
         )
 
         // stretch the second spaceship as well
         invaders2 = Bitmap.createScaledBitmap(
-            invaders2,
-            (size.x / 35f).toInt(),
-            (size.y / 35f).toInt(),
-            false
+                invaders2,
+                (size.x / 35f).toInt(),
+                (size.y / 35f).toInt(),
+                false
         )
 
         currentInvadersFrame = invaders1
@@ -108,12 +109,20 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
 
             canvas.drawBitmap(currentInvadersFrame, 200f, 100f, paint)
 
-            val src = Rectangle(0,0,16,16)
-            val dest = Rectangle(0,0,16,16)
-            canvas.drawBitmap(roguelikeSheet, src, dest, paint)
 
-            val src2 = Rectangle(16,16,32,32)
-            val dest2 = Rectangle(32,32,32,32)
+            val dp = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    16f, context.resources.displayMetrics)
+
+            
+            val src = Rect(0, 0, (dp*2).toInt(), (dp*4).toInt())
+            val dest = Rect(800, 200, (800+(dp*2)).toInt(), (200+(dp*4)).toInt())
+            canvas.drawRect(dest, paint)
+            canvas.drawBitmap(roguelikeSheet, src, dest, null)
+
+            val src2 = Rect(64, 0, 128, 64)
+            val dest2 = Rect(200, 200, 264, 264)
+            canvas.drawRect(src2, paint)
+            canvas.drawRect(dest2, paint)
             canvas.drawBitmap(roguelikeSheet, src2, dest2, null)
 
 
@@ -122,8 +131,8 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
             paint.color = Color.argb(255, 255, 255, 255)
             paint.textSize = 70f
             canvas.drawText(
-                "Score: $score   Lives: $lives Wave: " +
-                        "$waves HI: $highScore", 20f, 75f, paint
+                    "Score: $score   Lives: $lives Wave: " +
+                            "$waves HI: $highScore", 20f, 75f, paint
             )
 
             // Draw everything to the screen
