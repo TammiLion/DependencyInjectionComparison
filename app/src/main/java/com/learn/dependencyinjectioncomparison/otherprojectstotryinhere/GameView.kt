@@ -6,6 +6,9 @@ import android.view.MotionEvent
 import android.view.SurfaceView
 import com.learn.dependencyinjectioncomparison.R
 import android.util.TypedValue
+import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.SCALE_HALF
+import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.SCALE_X2
+import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.Sprite
 
 class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
 
@@ -22,6 +25,7 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
     private var roguelikeSheet: Bitmap = BitmapFactory.decodeResource(
             context.resources,
             R.drawable.roguelike_sheet)
+    private var rogueSprite = Sprite(context.resources, size, null, roguelikeSheet)
     private var currentInvadersFrame: Bitmap
     private var pastTime = 0.0f
     private val startTime = System.currentTimeMillis()
@@ -113,17 +117,22 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
             val dp = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                     16f, context.resources.displayMetrics)
 
-            
+            rogueSprite.scale = SCALE_HALF
+            rogueSprite.setSrc(Rect(0,0,32,64))
+            //rogueSprite.setDest(700,200,32,64)
+            rogueSprite.setDest(700,200)
+            rogueSprite.draw(canvas)
+
             val src = Rect(0, 0, (dp*2).toInt(), (dp*4).toInt())
             val dest = Rect(800, 200, (800+(dp*2)).toInt(), (200+(dp*4)).toInt())
             canvas.drawRect(dest, paint)
             canvas.drawBitmap(roguelikeSheet, src, dest, null)
 
-            val src2 = Rect(64, 0, 128, 64)
+            /*val src2 = Rect(64, 0, 128, 64)
             val dest2 = Rect(200, 200, 264, 264)
             canvas.drawRect(src2, paint)
             canvas.drawRect(dest2, paint)
-            canvas.drawBitmap(roguelikeSheet, src2, dest2, null)
+            canvas.drawBitmap(roguelikeSheet, src2, dest2, null)*/
 
 
             // Draw the score and remaining lives
