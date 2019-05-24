@@ -5,12 +5,15 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Rect
+import android.util.Log
 
 const val DEFAULT_SPEED = 1f
 const val SPEED_2X = 2f
 const val SPEED_HALF = 0.5f
 
-const val DEFAULT_FRAME_UPDATE = 0.3f
+const val DEFAULT_FRAME_UPDATE = 300f
+const val SLOW_UPDATE = 1000f
+const val FAST_UPDATE = 60f
 
 class AnimatedSprite(resources: Resources,
                      frames: List<Rect>,

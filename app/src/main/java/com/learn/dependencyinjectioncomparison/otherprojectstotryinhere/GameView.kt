@@ -27,7 +27,7 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
             16f, context.resources.displayMetrics)
 
     private var pastTime = 0.0f
-    private val startTime = System.currentTimeMillis()
+    private var startTime = System.currentTimeMillis()
 
     private var isPlaying = false
 
@@ -38,13 +38,14 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
 
 
     init {
-        animatedRogue.updateTime = 1000f
-        animatedRogue.animationSpeed = SPEED_HALF
+        animatedRogue.updateTime = 300f
     }
 
     override fun run() {
         while (isPlaying) {
-            val deltaTime = System.currentTimeMillis() - startTime
+            val currentTimeMillis = System.currentTimeMillis()
+            val deltaTime = currentTimeMillis - startTime
+            startTime = currentTimeMillis
             pastTime += deltaTime
             animatedRogue.update(deltaTime)
             draw()
