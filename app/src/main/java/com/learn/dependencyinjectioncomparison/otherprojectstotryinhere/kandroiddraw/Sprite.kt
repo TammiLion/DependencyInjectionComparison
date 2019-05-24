@@ -10,7 +10,7 @@ const val SCALE_X2 = 2f
 const val SCALE_X4 = 4f
 const val SCALE_HALF = 0.5f
 
-class Sprite(resources: Resources, size: Point, drawableRes: Int?, private var bitmap: Bitmap?) {
+class Sprite(resources: Resources, drawableRes: Int? = null, private var bitmap: Bitmap? = null) {
 
     private var src = Rect(0,0,0,0)
     private var dest = Rect(0,0,0,0)
