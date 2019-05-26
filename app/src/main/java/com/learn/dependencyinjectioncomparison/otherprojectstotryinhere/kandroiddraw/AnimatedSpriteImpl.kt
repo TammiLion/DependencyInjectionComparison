@@ -1,27 +1,17 @@
 package com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw
 
-import android.content.res.Resources
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Rect
 
-const val DEFAULT_SPEED = 1f
-const val SPEED_2X = 2f
-const val SPEED_HALF = 0.5f
+class AnimatedSpriteImpl(frames: List<Rect>,
+                         private var bitmap: Bitmap,
+                         spriteFactory: SpriteFactory) : AnimatedSprite {
 
-const val DEFAULT_FRAME_UPDATE = 300f
-const val SLOW_UPDATE = 1000f
-const val FAST_UPDATE = 60f
-
-class AnimatedSprite(frames: List<Rect>,
-                     private var bitmap: Bitmap? = null) : Sprite {
-
-    override var adaptToScreenDensity: Boolean = true
-    override var paint: Paint? = null
-    override var scale: Float = DEFAULT_SCALE
+    override var config: AnimatedSpriteConfiguration = AnimatedSpriteConfiguration()
 
     private var currentFrame: Int = 0
     private var time = 0f
-    var updateTime = DEFAULT_FRAME_UPDATE
-    var animationSpeed = DEFAULT_SPEED
     private var sprites: MutableList<Sprite> = mutableListOf()
 
     private var x = 0
@@ -30,21 +20,11 @@ class AnimatedSprite(frames: List<Rect>,
     private var height: Int? = null
 
     init {
-        if (bitmap == null && drawableRes != null) {
-            bitmap = BitmapFactory.decodeResource(resources, drawableRes)
-        }
-
-        SpriteFactory()
         frames.forEach {
-
-            sprites.add(SpriteImpl(bitmap = bitmap, adaptToScreenDensity = adaptToScreenDensity).apply {
-                setSource(it)
-            })
+            val sprite = spriteFactory.createSprite(bitmap)
+            sprite.apply { setSource(it) }
+            sprites.add(sprite)
         }
-    }
-
-    override fun setSource(src: Rect) {
-        //already handled by constructor
     }
 
     override fun setDestination(x: Int, y: Int, width: Int?, height: Int?) {
@@ -54,9 +34,9 @@ class AnimatedSprite(frames: List<Rect>,
         this.height = height
     }
 
-    fun update(deltaTime: Long) {
-        time += deltaTime * animationSpeed
-        if (time >= updateTime) {
+    override fun update(deltaTime: Long) {
+        time += deltaTime * config.animationSpeed
+        if (time >= config.updateTime) {
             time = 0f
             updateFrame()
         }
@@ -78,6 +58,7 @@ class AnimatedSprite(frames: List<Rect>,
 
     override fun draw(canvas: Canvas) {
         val sprite = sprites.getOrNull(currentFrame)
+        sprite?.config = config
         sprite?.setDestination(x, y, width, height)
         sprite?.draw(canvas)
     }
