@@ -4,9 +4,9 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Rect
 
-class StaticCompositeSprite(frames: List<Rect>,
-                            override var bitmap: Bitmap,
-                            spriteFactory: SpriteFactory) : Sprite {
+class CompositeSprite(frames: List<Rect>,
+                      override var bitmap: Bitmap,
+                      spriteFactory: SpriteFactory) : Sprite {
     override var config: SpriteConfiguration = SpriteConfiguration()
     set(value) {
         sprites.forEach {

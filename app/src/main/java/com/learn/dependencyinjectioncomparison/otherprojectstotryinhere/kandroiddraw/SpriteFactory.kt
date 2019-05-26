@@ -22,7 +22,7 @@ class SpriteFactory(private val resources: Resources) {
     }
 
     fun createCompositeSprite(frames: List<Rect>, bitmap: Bitmap): Sprite {
-        return StaticCompositeSprite(frames, bitmap, this)
+        return CompositeSprite(frames, bitmap, this)
     }
 
     fun createCompositeSprite(frames: List<Rect>, @DrawableRes drawableRes: Int): Sprite {
