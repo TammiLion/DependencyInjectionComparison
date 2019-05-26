@@ -6,9 +6,7 @@ import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.SurfaceView
 import com.learn.dependencyinjectioncomparison.R
-import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.AnimatedSprite
-import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.SPEED_HALF
-import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.Sprite
+import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.*
 
 class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
 
@@ -19,9 +17,12 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
     private var roguelikeSheet: Bitmap = BitmapFactory.decodeResource(
             context.resources,
             R.drawable.roguelike_sheet)
-    private var rogueSprite = Sprite(context.resources, bitmap = roguelikeSheet)
-    private var animatedRogue = AnimatedSprite(context.resources,
-            listOf(Rect(0, 0, 16, 16), Rect(17, 0, 33, 16)), roguelikeSheet)
+
+    private val spriteFactory = SpriteFactory(context.resources)
+
+    private var rogueSprite = spriteFactory.createSprite(roguelikeSheet)
+    private var animatedRogue = AnimatedSpriteImpl(listOf(Rect(0, 0, 16, 16),
+            Rect(17, 0, 33, 16)), roguelikeSheet, spriteFactory)
 
     private val dp = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
             16f, context.resources.displayMetrics)
@@ -38,7 +39,7 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
 
 
     init {
-        animatedRogue.updateTime = 300f
+        animatedRogue.config.updateTime = SLOW_UPDATE
     }
 
     override fun run() {
@@ -65,9 +66,9 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
             paint.color = Color.argb(255, 0, 255, 0)
 
             // Draw all the game objects here
-            rogueSprite.setSrc(Rect(0, 0, 32, 64))
-            //rogueSprite.setDest(700,200,32,64)
-            rogueSprite.setDest(700, 200)
+            rogueSprite.setSource(Rect(0, 0, 32, 64))
+            //rogueSprite.setDestination(700,200,32,64)
+            rogueSprite.setDestination(700, 200)
             rogueSprite.draw(canvas)
 
             val src = Rect(0, 0, (dp * 2).toInt(), (dp * 4).toInt())
@@ -75,7 +76,8 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
             canvas.drawRect(dest, paint)
             canvas.drawBitmap(roguelikeSheet, src, dest, null)
 
-            animatedRogue.setDest(600, 400)
+            animatedRogue.config.scale = SCALE_X4
+            animatedRogue.setDestination(600, 400)
             animatedRogue.draw(canvas)
 
             // Draw the score and remaining lives
