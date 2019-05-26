@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Rect
 
-class SpriteImpl(private var bitmap: Bitmap, private val pixToDp: Float) : Sprite {
+class SpriteImpl(override var bitmap: Bitmap, private val pixToDp: Float) : Sprite {
 
     override var config: SpriteConfiguration = SpriteConfiguration()
 

@@ -6,7 +6,9 @@ import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.SurfaceView
 import com.learn.dependencyinjectioncomparison.R
-import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.*
+import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.SCALE_X4
+import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.SLOW_UPDATE
+import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.SpriteFactory
 
 class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
 
@@ -20,9 +22,14 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
 
     private val spriteFactory = SpriteFactory(context.resources)
 
-    private var rogueSprite = spriteFactory.createSprite(roguelikeSheet)
-    private var animatedRogue = AnimatedSpriteImpl(listOf(Rect(0, 0, 16, 16),
-            Rect(17, 0, 33, 16)), roguelikeSheet, spriteFactory)
+    private var rogueSprite = spriteFactory.createSprite(R.drawable.roguelike_sheet)
+    private var animatedRogue = spriteFactory.createAnimatedSprite(
+            listOf(Rect(0, 0, 16, 16),
+                    Rect(17, 0, 33, 16)), rogueSprite.bitmap)
+
+    private var compositeRogue = spriteFactory.createCompositeSprite(listOf(
+            Rect(0, 0, 16, 16), Rect(52, 52, 68, 68)),
+            roguelikeSheet)
 
     private val dp = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
             16f, context.resources.displayMetrics)
@@ -39,6 +46,7 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
 
 
     init {
+        compositeRogue.config.scale = SCALE_X4
         animatedRogue.config.updateTime = SLOW_UPDATE
     }
 
@@ -76,9 +84,12 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
             canvas.drawRect(dest, paint)
             canvas.drawBitmap(roguelikeSheet, src, dest, null)
 
-            animatedRogue.config.scale = SCALE_X4
             animatedRogue.setDestination(600, 400)
             animatedRogue.draw(canvas)
+
+            compositeRogue.config = compositeRogue.config.apply { scale = SCALE_X4 }
+            compositeRogue.setDestination(600,600)
+            compositeRogue.draw(canvas)
 
             // Draw the score and remaining lives
             // Change the brush color
