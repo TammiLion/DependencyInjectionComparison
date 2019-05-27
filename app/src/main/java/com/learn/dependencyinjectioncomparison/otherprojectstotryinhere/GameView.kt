@@ -9,6 +9,7 @@ import com.learn.dependencyinjectioncomparison.R
 import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.SCALE_X4
 import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.SLOW_UPDATE
 import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.SpriteFactory
+import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.utils.RowColumnCalculator
 
 class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
 
@@ -27,8 +28,16 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
             listOf(Rect(0, 0, 16, 16),
                     Rect(17, 0, 33, 16)), rogueSprite.bitmap)
 
-    private var compositeRogue = spriteFactory.createCompositeSprite(listOf(
-            Rect(0, 0, 16, 16), Rect(52, 52, 68, 68)),
+    private val rowColumnCalc = RowColumnCalculator(16, 16, 1)
+    private val body = rowColumnCalc.getRect(0, 0)
+    private val pants = rowColumnCalc.getRect(3, 0)
+    private val shoes = rowColumnCalc.getRect(4, 5)
+    private val chest = rowColumnCalc.getRect(6, 9)
+
+    private var oldCompositeRogue = spriteFactory.createCompositeSprite(listOf(
+            Rect(0, 0, 16, 16), Rect(52, 52, 68, 68)), roguelikeSheet)
+
+    private var compositeRogue = spriteFactory.createCompositeSprite(listOf(body, pants, shoes, chest),
             roguelikeSheet)
 
     private val dp = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
@@ -88,8 +97,12 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
             animatedRogue.draw(canvas)
 
             compositeRogue.config = compositeRogue.config.apply { scale = SCALE_X4 }
-            compositeRogue.setDestination(600,600)
+            compositeRogue.setDestination(600, 600)
             compositeRogue.draw(canvas)
+
+            oldCompositeRogue.config = oldCompositeRogue.config.apply { scale = SCALE_X4 }
+            oldCompositeRogue.setDestination(200, 600)
+            oldCompositeRogue.draw(canvas)
 
             // Draw the score and remaining lives
             // Change the brush color
