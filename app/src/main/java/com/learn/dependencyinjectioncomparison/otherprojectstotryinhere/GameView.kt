@@ -2,12 +2,14 @@ package com.learn.dependencyinjectioncomparison.otherprojectstotryinhere
 
 import android.content.Context
 import android.graphics.*
+import android.util.Log
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.SurfaceView
 import com.learn.dependencyinjectioncomparison.R
 import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.SCALE_X4
 import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.SLOW_UPDATE
+import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.SpriteConfiguration
 import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.SpriteFactory
 import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.utils.RowColumnCalculator
 
@@ -17,28 +19,23 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
     private var canvas: Canvas = Canvas()
     private val paint: Paint = Paint()
 
-    private var roguelikeSheet: Bitmap = BitmapFactory.decodeResource(
+    private var simpleSheet: Bitmap = BitmapFactory.decodeResource(
             context.resources,
-            R.drawable.roguelike_sheet)
+            R.drawable.simple_sheet)
+
+    private var scaledSimple: Bitmap = Bitmap.createScaledBitmap(simpleSheet, 64*9, 64, false)
 
     private val spriteFactory = SpriteFactory(context.resources)
 
-    private var rogueSprite = spriteFactory.createSprite(R.drawable.roguelike_sheet)
-    private var animatedRogue = spriteFactory.createAnimatedSprite(
-            listOf(Rect(0, 0, 16, 16),
-                    Rect(17, 0, 33, 16)), rogueSprite.bitmap)
-
-    private val rowColumnCalc = RowColumnCalculator(16, 16, 1)
+    private val rowColumnCalc = RowColumnCalculator(64, 64, 0)
     private val body = rowColumnCalc.getRect(0, 0)
-    private val pants = rowColumnCalc.getRect(3, 0)
-    private val shoes = rowColumnCalc.getRect(4, 5)
-    private val chest = rowColumnCalc.getRect(6, 9)
+    private val pants = rowColumnCalc.getRect(2, 0)
+    private val shoes = rowColumnCalc.getRect(3, 0)
+    private val chest = rowColumnCalc.getRect(4, 0)
+    private val body2 = rowColumnCalc.getRect(1,0)
+    private var animatedRogue = spriteFactory.createAnimatedSprite(listOf(body, body2), scaledSimple)
+    private var compositeRogue = spriteFactory.createCompositeSprite(listOf(body, pants, shoes, chest), scaledSimple)
 
-    private var oldCompositeRogue = spriteFactory.createCompositeSprite(listOf(
-            Rect(0, 0, 16, 16), Rect(52, 52, 68, 68)), roguelikeSheet)
-
-    private var compositeRogue = spriteFactory.createCompositeSprite(listOf(body, pants, shoes, chest),
-            roguelikeSheet)
 
     private val dp = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
             16f, context.resources.displayMetrics)
@@ -52,12 +49,6 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
     private var lives = 3
     private var waves = 10
     private var highScore = 9000
-
-
-    init {
-        compositeRogue.config.scale = SCALE_X4
-        animatedRogue.config.updateTime = SLOW_UPDATE
-    }
 
     override fun run() {
         while (isPlaying) {
@@ -83,26 +74,12 @@ class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
             paint.color = Color.argb(255, 0, 255, 0)
 
             // Draw all the game objects here
-            rogueSprite.setSource(Rect(0, 0, 32, 64))
-            //rogueSprite.setDestination(700,200,32,64)
-            rogueSprite.setDestination(700, 200)
-            rogueSprite.draw(canvas)
-
-            val src = Rect(0, 0, (dp * 2).toInt(), (dp * 4).toInt())
-            val dest = Rect(800, 200, (800 + (dp * 2)).toInt(), (200 + (dp * 4)).toInt())
-            canvas.drawRect(dest, paint)
-            canvas.drawBitmap(roguelikeSheet, src, dest, null)
 
             animatedRogue.setDestination(600, 400)
             animatedRogue.draw(canvas)
 
-            compositeRogue.config = compositeRogue.config.apply { scale = SCALE_X4 }
             compositeRogue.setDestination(600, 600)
             compositeRogue.draw(canvas)
-
-            oldCompositeRogue.config = oldCompositeRogue.config.apply { scale = SCALE_X4 }
-            oldCompositeRogue.setDestination(200, 600)
-            oldCompositeRogue.draw(canvas)
 
             // Draw the score and remaining lives
             // Change the brush color

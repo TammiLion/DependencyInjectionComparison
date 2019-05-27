@@ -9,11 +9,8 @@ import androidx.annotation.DrawableRes
 
 class SpriteFactory(private val resources: Resources) {
 
-    private val pixToDp: Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-            1f, resources.displayMetrics)
-
     fun createSprite(bitmap: Bitmap): Sprite {
-        return SpriteImpl(bitmap, pixToDp)
+        return SpriteImpl(bitmap)
     }
 
     fun createSprite(@DrawableRes drawableRes: Int): Sprite {
@@ -21,13 +18,13 @@ class SpriteFactory(private val resources: Resources) {
         return createSprite(bitmap)
     }
 
-    fun createCompositeSprite(frames: List<Rect>, bitmap: Bitmap): Sprite {
-        return CompositeSprite(frames, bitmap, this)
+    fun createCompositeSprite(frames: List<Rect>, bitmap: Bitmap, config: SpriteConfiguration = SpriteConfiguration()): Sprite {
+        return CompositeSprite(frames, bitmap, this, config)
     }
 
-    fun createCompositeSprite(frames: List<Rect>, @DrawableRes drawableRes: Int): Sprite {
+    fun createCompositeSprite(frames: List<Rect>, @DrawableRes drawableRes: Int, config: SpriteConfiguration = SpriteConfiguration()): Sprite {
         val bitmap = BitmapFactory.decodeResource(resources, drawableRes)
-        return createCompositeSprite(frames, bitmap)
+        return createCompositeSprite(frames, bitmap, config)
     }
 
     fun createAnimatedSprite(frames: List<Rect>, bitmap: Bitmap): AnimatedSprite {

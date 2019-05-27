@@ -3,7 +3,6 @@ package com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroi
 import android.graphics.Paint
 
 open class SpriteConfiguration(var scale: Float = DEFAULT_SCALE,
-                               var adaptToScreenDensity: Boolean = true,
                                var paint: Paint? = null)
 
 open class AnimatedSpriteConfiguration(var updateTime: Float = DEFAULT_FRAME_UPDATE,

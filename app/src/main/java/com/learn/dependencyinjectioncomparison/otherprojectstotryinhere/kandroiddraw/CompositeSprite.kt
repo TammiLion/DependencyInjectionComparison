@@ -6,8 +6,9 @@ import android.graphics.Rect
 
 class CompositeSprite(frames: List<Rect>,
                       override var bitmap: Bitmap,
-                      spriteFactory: SpriteFactory) : Sprite {
-    override var config: SpriteConfiguration = SpriteConfiguration()
+                      spriteFactory: SpriteFactory,
+                      spriteConfiguration: SpriteConfiguration = SpriteConfiguration()) : Sprite {
+    override var config: SpriteConfiguration = spriteConfiguration
     set(value) {
         sprites.forEach {
             it.config = config

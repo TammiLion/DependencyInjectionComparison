@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Rect
 
-class SpriteImpl(override var bitmap: Bitmap, private val pixToDp: Float) : Sprite {
+class SpriteImpl(override var bitmap: Bitmap) : Sprite {
 
     override var config: SpriteConfiguration = SpriteConfiguration()
 
@@ -15,7 +15,7 @@ class SpriteImpl(override var bitmap: Bitmap, private val pixToDp: Float) : Spri
     Set coordinates of the part of the image that should be drawn.
      */
     override fun setSource(src: Rect) {
-        this.src = if (config.adaptToScreenDensity) getRectangleAdaptedToDensity(src) else src
+        this.src = src
     }
 
     /*
@@ -25,16 +25,8 @@ class SpriteImpl(override var bitmap: Bitmap, private val pixToDp: Float) : Spri
         dest = if (width == null || height == null) {
             Rect(x, y, (x + (src.width() * config.scale)).toInt(), (y + (src.height() * config.scale)).toInt())
         } else {
-            if (config.adaptToScreenDensity) {
-                Rect(x, y, x + (width * pixToDp * config.scale).toInt(), y + (height * pixToDp * config.scale).toInt())
-            } else {
-                Rect(x, y, (x + (width * config.scale)).toInt(), (y + (height * config.scale)).toInt())
-            }
+            Rect(x, y, (x + (width * config.scale)).toInt(), (y + (height * config.scale)).toInt())
         }
-    }
-
-    private fun getRectangleAdaptedToDensity(rect: Rect): Rect {
-        return Rect((rect.left * pixToDp).toInt(), (rect.top * pixToDp).toInt(), (rect.right * pixToDp).toInt(), (rect.bottom * pixToDp).toInt())
     }
 
     override fun draw(canvas: Canvas) {
