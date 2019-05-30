@@ -16,7 +16,7 @@
 
         </activity>
         <activity android:name=".ProviderActivity"/>
-        <activity android:name=".otherprojectstotryinhere.SpaceInvadersActivity">
+        <activity android:name=".otherprojectstotryinhere.GameActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

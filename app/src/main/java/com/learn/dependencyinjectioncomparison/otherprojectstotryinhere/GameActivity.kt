@@ -4,12 +4,12 @@ import android.graphics.Point
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
-class SpaceInvadersActivity : AppCompatActivity() {
+class GameActivity : AppCompatActivity() {
 
-    // kotlinInvadersView will be the view of the game
+    // gameView will be the view of the game
     // It will also hold the logic of the game
     // and respond to screen touches as well
-    private var kotlinInvadersView: GameView? = null
+    private var gameView: GameView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,8 +21,8 @@ class SpaceInvadersActivity : AppCompatActivity() {
         display.getSize(size)
 
         // Initialize gameView and set it as the view
-        kotlinInvadersView = GameView(this, size)
-        setContentView(kotlinInvadersView)
+        gameView = GameView(this, size)
+        setContentView(gameView)
     }
 
     // This method executes when the player starts the game
@@ -30,7 +30,7 @@ class SpaceInvadersActivity : AppCompatActivity() {
         super.onResume()
 
         // Tell the gameView resume method to execute
-        kotlinInvadersView?.resume()
+        gameView?.resume()
     }
 
     // This method executes when the player quits the game
@@ -38,7 +38,7 @@ class SpaceInvadersActivity : AppCompatActivity() {
         super.onPause()
 
         // Tell the gameView pause method to execute
-        kotlinInvadersView?.pause()
+        gameView?.pause()
     }
 
 }
