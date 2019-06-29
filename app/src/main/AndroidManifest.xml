@@ -16,12 +16,15 @@
 
         </activity>
         <activity android:name=".ProviderActivity"/>
-        <activity android:name=".otherprojectstotryinhere.GameActivity">
+        <activity android:name=".otherprojectstotryinhere.battlesystems.BSActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name=".otherprojectstotryinhere.kandroiddraw.GameActivity">
+
         </activity>
     </application>
 

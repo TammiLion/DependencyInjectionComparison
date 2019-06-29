@@ -1,4 +1,4 @@
-package com.learn.dependencyinjectioncomparison.otherprojectstotryinhere
+package com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw
 
 import android.graphics.Point
 import android.os.Bundle

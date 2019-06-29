@@ -1,12 +1,10 @@
-package com.learn.dependencyinjectioncomparison.otherprojectstotryinhere
+package com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw
 
 import android.content.Context
 import android.graphics.*
 import android.view.MotionEvent
 import android.view.SurfaceView
 import com.learn.dependencyinjectioncomparison.R
-import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.SCALE_X4
-import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.SpriteFactory
 import com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.kandroiddraw.utils.RowColumnCalculator
 
 class GameView(context: Context, size: Point) : SurfaceView(context), Runnable {
