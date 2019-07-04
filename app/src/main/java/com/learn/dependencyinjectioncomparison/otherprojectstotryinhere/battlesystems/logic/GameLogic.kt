@@ -1,20 +1,50 @@
 package com.learn.dependencyinjectioncomparison.otherprojectstotryinhere.battlesystems.logic
 
-open class GameLogic(val listener: Listener) {
+open class GameLogic(val playerListener: Listener) {
 
+    var aiListener: Listener? = null
+    set(value) {
+        field = value
+        nextPhase()
+    }
     private val phasesInOrder = listOf(PREPARATION, BATTLE, DEFENSE, DEFEAT, WIN)
     private var currentPhase = 0
 
+    private var playerAction: Action? = null
+    private var enemyAction: Action? = null
+
     init {
         currentPhase = -1
-        nextPhase()
+    }
+
+    fun battle(engager: Actor, engaged: Actor) {
+
     }
 
     fun onPlayerAction(action: Action) {
-        //TODO wait for this plus enemy
-        val success = doChance(action.baseChance)
-        val result = if (success) "Action ${action.identifier} was a success" else "Action ${action.identifier} was a failure"
-        listener.onActionResult(result)
+        playerAction = action
+        processActions()
+    }
+
+    fun onEnemyAction(action: Action) {
+        enemyAction = action
+        processActions()
+    }
+
+    fun processActions() {
+        playerAction?.let { pAction ->
+            enemyAction?.let { eAction ->
+                val success = doChance(pAction.baseChance)
+                val eSuccess = doChance(eAction.baseChance)
+                val result = if (success) "Player action ${pAction.identifier} was a success" else "Player action ${pAction.identifier} was a failure"
+                val eResult = if (eSuccess) "Enemy action ${eAction.identifier} was a success" else "Enemy action ${eAction.identifier} was a failure"
+
+                playerListener.onActionResult("$result\n$eResult")
+
+                playerAction = null
+                enemyAction = null
+            }
+        }
     }
 
     fun nextPhase() {
@@ -23,8 +53,10 @@ open class GameLogic(val listener: Listener) {
             currentPhase = 0
         }
         val phase = phasesInOrder[currentPhase]
-        listener.onPhaseChanged(phase)
-        listener.onActionsChanged(phase.allowedActions)
+        playerListener.onPhaseChanged(phase)
+        playerListener.onActionsChanged(phase.allowedActions)
+        aiListener?.onPhaseChanged(phase)
+        aiListener?.onActionsChanged(phase.allowedActions)
     }
 
     interface Listener {
